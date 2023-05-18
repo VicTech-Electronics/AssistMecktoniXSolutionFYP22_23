@@ -1,0 +1,25 @@
+.account_details, .details{
+    position: relative; 
+    top: 40px;
+    width: 80%;
+    font-size: 20px;
+    text-align: left;
+    margin-left: 20px;
+}
+
+.trans_details{
+    position: absolute;
+    left: 67.5vw;
+    width: 30vw;
+    height: 590px;
+    margin-top: 10px;
+    background-color: #ffffff;
+}
+
+.account_details th{
+    width: 200px;
+}
+
+.account_details th, .account_details td{
+    height: 30px;
+}
