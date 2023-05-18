@@ -1,1 +1,1 @@
-web: electricMeter.wsgi --log-file -
+web: gunicorn electricMeter.wsgi --log-file -
