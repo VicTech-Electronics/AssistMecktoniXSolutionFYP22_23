@@ -12767,8 +12767,6 @@ a.back i {
 .login_text_field_bg {
   background-color: rgba(71, 90, 171, 0.07); }
 
-select {
-
 .input-style:focus {
   border: 1px solid var(--primary);
   outline: none;
