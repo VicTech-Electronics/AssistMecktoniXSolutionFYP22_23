@@ -22,7 +22,7 @@
         </div>
         <div class="menu">
             <ul>
-                <li>{% block username %}{{request.user}}{% endblock %}</lri>
+                <li>{% block username %}<a href="{% url 'register' %}" style="color: #fff;">{{request.user}}</a>{% endblock %}</lri>
                 <li>{% block logout_link %} <a id="logout_link" href="{% url 'logout' %}"> logout </a> {% endblock %}</li>
             </ul>
         </div>
@@ -77,7 +77,8 @@
                     <thead>
                         <tr>
                             <th>USERNAME</th>
-                            <th>CARD NO.</th>
+                            <th>METER No:</th>
+                            <th>UNITS</th>
                             <th>BALANCE</th>
                             <th>STATUS</th>
                         </tr>
@@ -86,7 +87,8 @@
                         {% for customer in customers %}
                             <tr>
                                 <td>{{customer.user.username}}</td>
-                                <td>{{customer.card_no}}</td>
+                                <td>{{customer.meter_number}}</td>
+                                <td>{{customer.units}}</td>
                                 <td>{{customer.amount}} Tsh.</td>
                                 <td>
                                     {% if customer.status == 'Active' %}
@@ -111,7 +113,7 @@
         <center>
             <hr>
             &copy; Copyright <strong>DIT</strong>, Projects 2022/23 <br>
-            Engineer: <strong>Jesca Alex</strong>
+            Engineer: <strong>Ahmad Abdu Mussa</strong>
         </center>
     </Footer>
 

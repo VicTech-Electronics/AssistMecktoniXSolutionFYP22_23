@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{% static 'css/admin_page.css' %}">
     <link rel="stylesheet" href="{% static 'css/customer_page.css' %}">
     <link rel="stylesheet" href="{% static 'css/tables.css' %}">
+    <link rel="stylesheet" href="{% static 'css/forms.css' %}">
 {% endblock %}
 
 {% block username %} {{request.user}} {% endblock %} 
@@ -16,9 +17,9 @@
 <!-- Electronics money details  -->
 {% block details %}
     <div class="balance">
-        <span id="title">Balance</span>
+        <span id="title">UNITS</span>
         <hr>
-        <strong>{{customer.amount}}</strong>Tsh.
+        <strong>{{customer.units}}</strong>kWh.
     </div>
 {% endblock %}
 
@@ -63,8 +64,8 @@
                     <td>{{customer.user.email}}</td>
                 </tr>
                 <tr>
-                    <th>Card number:</th>
-                    <td>{{customer.card_no}}</td>
+                    <th>Meter number:</th>
+                    <td>{{customer.meter_number}}</td>
                 </tr>
                 <tr>
                     <th>Reg. date:</th>
@@ -84,23 +85,25 @@
 
 <!-- Customer transaction details -->
 <div class="trans_details">
-    <span id="table_title">Transaction details</span>
+    <span id="table_title">BALANCE</span> 
+    <strong id="customer_amount">{{customer.amount}} <small>TSh.</small></strong>
+
+    
     <hr id="details_line">
-    <table class="details">
-        <thead>
-            <tr style="text-decoration: underline;">
-                    <th><big>Date</big></th>
-                    <th><big>Details</big></th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for transaction in transactions %}
-                <tr style="font-size: 15px;">
-                    <th>{{transaction.date}}</th>
-                    <td>{{transaction.details}}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="payment_form">
+        <center>
+            <h1>Payment form</h1>
+            <form action="{% url 'payment' %}" method="post">
+                {% csrf_token %}
+                <input type="number" name="amount" placeholder="Payment amount" required><br>
+                <input type="password" name="password" placeholder="Enter password to confirm" required><br>
+                <input id="form_btn" type="submit" value="Make payment"><br><br>
+    
+                {% for message in messages %}
+                    <p class="{{message.logs}}">{{message}}</p>
+                {% endfor %}
+            </form>
+        </center>
+    </div>
 </div>
 {% endblock %}

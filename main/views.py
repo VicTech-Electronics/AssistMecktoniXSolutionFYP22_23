@@ -6,6 +6,9 @@ from django.contrib.auth.decorators import login_required
 from .models import *
 from .decorators import admin_only, unauthorized_user
 
+# Decralation of useful variable
+amount_per_unit = 100
+
 # Create your views here.
 @login_required(login_url='login')
 @admin_only
@@ -75,7 +78,7 @@ def register(request):
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         email = request.POST.get('email')
-        card_no = request.POST.get('card_no')
+        meter_number = request.POST.get('meter_number')
         password1 = request.POST.get('password1')
         password2 = request.POST.get('password2')
 
@@ -85,7 +88,7 @@ def register(request):
                 return redirect('register')
             else:
                 user = User.objects.create_user(username=username, first_name=first_name, last_name=last_name, email=email, password=password1)
-                customer = Customer.objects.create(user=user, card_no=card_no, amount=0.0, status=False)
+                customer = Customer.objects.create(user=user, meter_number=meter_number, amount=0.0, status=False)
                 user.save()
                 customer.save()
 
@@ -105,6 +108,8 @@ def register(request):
 @login_required(login_url='login')
 def permition(request, id): 
     customer = Customer.objects.get(pk = id)
+    user = User.objects.get(username=customer.user.username)
+
     permision = request.POST.get('permision')
     
     if permision ==  'activate':
@@ -115,6 +120,7 @@ def permition(request, id):
         customer.save()
     elif permision == 'delete':
         customer.delete()
+        user.delete()
 
     return redirect('../')
 
@@ -164,3 +170,28 @@ def search(request):
             return redirect('../')
     else:
         return redirect('../')
+    
+
+@login_required(login_url='login')
+def payment(request):
+    if request.method == 'POST':
+        amount = float(request.POST.get('amount'))
+        password = request.POST.get('password')
+
+        user = authenticate(username=request.user.username, password=password)
+        if user is not None:
+            customer = Customer.objects.get(user = request.user)
+
+            if customer.amount >= amount:
+                customer.amount -= amount
+
+                unit_purchase = amount / amount_per_unit
+                customer.units += unit_purchase
+
+                customer.save()
+                messages.success(request, 'Payment is done successfuly')
+            else:
+                messages.info(request, 'Sorry! You dont have suficient amount to purchase this bundle')  
+        else:
+            messages.error(request, 'Incorect password')
+    return redirect('../')

@@ -73,3 +73,21 @@
     color: #ff0000;
     border: solid #ff0000 1px;
 }
+
+.payment_form{
+    margin-top: 100px;
+}
+
+.payment_form input{
+    width: 350px;
+    height: 30px;
+    margin: 10px;
+    font-size: 20px;
+}
+
+#customer_amount{
+    position: absolute;
+    font-size: 30px;
+    top: 10px;
+    right: 50px;
+}

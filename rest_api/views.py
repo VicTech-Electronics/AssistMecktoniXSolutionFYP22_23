@@ -1,6 +1,5 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import TransactionSerializer
 from rest_framework import status
 from main.models import Customer
 
@@ -17,34 +16,63 @@ def documentation(request):
             'description': 'View documentation for this API'
         },
         {
-            'endpoint': '.../api/payment',
+            'endpoint': '.../api/usage',
             'methode': 'POST',
-            'body': '{"card_number": str, "amount": float, "details": str}',
-            'description': 'Adding a new payment infomation details'
+            'body': '{"meter_number": str, "units": float}',
+            'response': '{"units": float,"status": boolean}',
+            'description': 'Update units used'
+        },
+        {
+            'endpoint': '.../api/topup',
+            'methode': 'POST',
+            'body': '{"meter_number": str, "units": float}',
+            'response': '{"units": float,"status": boolean}',
+            'description': 'Update meter topup units'
         }
     ]
     return Response(info, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
-def payment(request):
-    customer = Customer.objects.get(card_no = request.data.get('card_number'))
-    payment_data = {
-        'customer': customer.pk,
-        'amount': request.data.get('amount'),
-        'details': request.data.get('details'),
-    }
+def usage(request):
+    meter_number = request.data.get('meter_number')
+    if Customer.objects.filter(meter_number = meter_number).exists():
+        customer = Customer.objects.get(meter_number = meter_number)
+        remaining_units = customer.units - request.data.get('units')
 
-    serializer = TransactionSerializer(data = payment_data)
-    if serializer.is_valid():
-        remained_balance = customer.amount - request.data.get('amount')
+        if remaining_units < 0.0:
+            remaining_units = 0.0
+        
+        customer.units = remaining_units
+        customer.save()
 
-        if remained_balance >= 0:
-            customer.amount = remained_balance
-            customer.save()
-            serializer.save()
-            return Response('SUCCESS')
-        else:
-            return Response('Insufficient balance', status=status.HTTP_402_PAYMENT_REQUIRED)
+        payload = {
+            'units': remaining_units,
+            'status': customer.status
+        }
+        return Response(payload)
     else:
-        return Response('FAIL', status=status.HTTP_400_BAD_REQUEST)
+        return Response(f'Customer of meter number {meter_number}, Not exist')
+    
+
+
+@api_view(['POST'])
+def meterTopup(request):
+    meter_number = request.data.get('meter_number')
+    if Customer.objects.filter(meter_number = meter_number).exists():
+        customer = Customer.objects.get(meter_number = meter_number)
+        remaining_units = customer.units + request.data.get('units')
+
+        if remaining_units < 0.0:
+            remaining_units = 0.0
+        
+        customer.units = remaining_units
+        customer.save()
+
+        payload = {
+            'units': remaining_units,
+            'status': customer.status
+        }
+        return Response(payload)
+    else:
+        return Response(f'Customer of meter number {meter_number}, Not exist')
     
