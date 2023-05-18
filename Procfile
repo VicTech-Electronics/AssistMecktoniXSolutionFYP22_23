@@ -1,0 +1,1 @@
+web: electricMeter.wsgi --log-file -
