@@ -24,4 +24,4 @@ class Due(models.Model):
     date_time = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.details
+        return self.customer.user.username

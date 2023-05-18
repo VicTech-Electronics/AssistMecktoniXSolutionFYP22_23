@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from main_app.models import Customer
+from main_app.models import Customer, Due
 from .models import DueSerializer
 
 # Decralation of useful variables
@@ -36,11 +36,17 @@ def service(request):
             'amount': request.data.get('units') * cost_per_unit,
         }
 
-        serializer = DueSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
+        if Due.objects.filter(customer=customer).exists():
+            due = Due.objects.get(customer=customer)
+            due.amount += data['amount']
+            due.save()
             return Response('SUCCESS')
         else:
-            return Response('FAIL')
+            serializer = DueSerializer(data=data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response('SUCCESS')
+            else:
+                return Response('FAIL')
     else:
         return Response('Meter number not exist', status=status.HTTP_404_NOT_FOUND)
