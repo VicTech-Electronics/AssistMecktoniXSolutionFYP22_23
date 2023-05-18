@@ -1,4 +1,4 @@
 # VicTech Electronics
-## Final_projects_2022-23
-These are the project from Victech ELectronic for final year 
-Engineering students 2022/23 from defferent Colleges and Universities
+## Final projects 2022/23
+This are the all hardware project conducted at VicTech Electronics for Engineering final year project 2022/23
+192.168.0.1
