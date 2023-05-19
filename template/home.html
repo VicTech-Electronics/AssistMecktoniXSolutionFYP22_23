@@ -93,16 +93,20 @@
     <div class="payment_form">
         <center>
             <h1>Payment form</h1>
-            <form action="{% url 'payment' %}" method="post">
-                {% csrf_token %}
-                <input type="number" name="amount" placeholder="Payment amount" required><br>
-                <input type="password" name="password" placeholder="Enter password to confirm" required><br>
-                <input id="form_btn" type="submit" value="Make payment"><br><br>
-    
-                {% for message in messages %}
-                    <p class="{{message.logs}}">{{message}}</p>
-                {% endfor %}
-            </form>
+            {% if user_group == 'admin' %}
+                <form action="{% url 'payment' id=customer.pk %}" method="post">
+            {% else %}
+                <form action="{% url 'payment' id=customer.pk %}" method="post">
+            {% endif %}
+                    {% csrf_token %}
+                    <input type="number" name="amount" placeholder="Payment amount" required><br>
+                    <input type="password" name="password" placeholder="Enter password to confirm" required><br>
+                    <input id="form_btn" type="submit" value="Make payment"><br><br>
+
+                    {% for message in messages %}
+                        <p class="{{message.logs}}">{{message}}</p>
+                    {% endfor %}
+                </form>
         </center>
     </div>
 </div>
