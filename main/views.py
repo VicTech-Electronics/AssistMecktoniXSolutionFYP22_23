@@ -177,11 +177,11 @@ def payment(request):
     if request.method == 'POST':
         amount = float(request.POST.get('amount'))
         password = request.POST.get('password')
-
-        user = authenticate(username=request.user.username, password=password)
-        if user is not None:
-            customer = Customer.objects.get(user = request.user)
-
+        
+        customer = Customer.objects.get(pk = id)
+        user = User.objects.get(username=customer.user.username)
+        authenticated_user = authenticate(username=user.username, password=password)
+        if authenticated_user is not None:
             if customer.amount >= amount:
                 customer.amount -= amount
 
