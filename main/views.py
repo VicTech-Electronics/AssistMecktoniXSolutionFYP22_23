@@ -173,7 +173,7 @@ def search(request):
     
 
 @login_required(login_url='login')
-def payment(request):
+def payment(request, id):
     if request.method == 'POST':
         amount = float(request.POST.get('amount'))
         password = request.POST.get('password')
