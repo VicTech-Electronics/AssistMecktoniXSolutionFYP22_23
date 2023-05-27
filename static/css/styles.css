@@ -1,0 +1,30 @@
+.table-container {
+    display: flex;
+}
+
+.table-container table {
+    border-collapse: collapse;
+    width: 50%;
+    margin: 10px;
+    flex-grow: 0;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+}
+
+caption{
+    color: #0e0e92;
+    font-size: large;
+}
+
+#title{
+    color: #0e0e92;
+}
+
+th{
+    color: #fff;
+    background-color: #0e0e92;
+}
