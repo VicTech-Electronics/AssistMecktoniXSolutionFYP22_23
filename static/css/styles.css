@@ -28,3 +28,13 @@ th{
     color: #fff;
     background-color: #0e0e92;
 }
+
+#button1, #button2, 
+#button1{
+    position: absolute;
+    left: 650px;
+}
+#button2{
+    position: absolute;
+    left: 1390px;
+}
