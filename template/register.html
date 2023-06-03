@@ -1,33 +1,46 @@
-{% extends 'index.html' %}
+{% extends 'admin.html' %}
 {% load static %}
-{% block contents %}
-<div class="container-fluid">
-    <div class="row justify-content-center align-iterms-center" style="height: 100vh;">
-        <div class="col-md-6 card card-center">
-            <div class="cards__heading">
-                <h3>Registration Page <span></span></h3>
-            </div>
-            <div class="card-body">
-                <form action="{% url 'register' %}" method="post">
-                    {% csrf_token %}
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="username" class="input__label">Username</label>
-                            <input type="text" class="form-control input-style" name="username" placeholder="Enter username">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="card_number" class="input__label">Meter number</label>
-                            <input type="text" class="form-control input-style" name="meter_number" placeholder="Enter meter number">
-                        </div>
-                    </div>
-                    {% for message in messages %}
-                        <p class="{{message.tags}}">{{message}}</p>
-                    {% endfor %}
+{% block page_title %}
+    <title>Register</title>
+{% endblock %}
 
-                    <button type="submit" class="btn btn-primary btn-style mt-4">Register</button>
-                </form>
-            </div>
-        </div>
-    </div>
+{% block links %}
+    <link rel="stylesheet" href="{% static 'css/admin_page.css' %}">
+    <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+{% endblock %}
+
+
+{% block details %}
+<div class="reg_form">
+    <center>
+        <h2 id="form_title">Registration Form</h2>
+        <form action="{% url 'register' %}" method="post">
+            {% csrf_token %}
+            <input type="text" name="username" placeholder="Username" required><br>
+            <input type="text" name="first_name" placeholder="First name" required><br>
+            <input type="text" name="last_name" placeholder="Last name" required><br>
+            <input type="email" name="email" placeholder="Email"><br>
+            <input type="text" name="meter_number" placeholder="Meter number" required><br>
+            <input type="password" name="password1" placeholder="Password" required><br>
+            <input type="password" name="password2" placeholder="Confirm password" required><br>
+            <input id="form_btn" type="submit" value="Register"> <br><br>
+
+            {% for message in messages %}
+                <p class="{{message.logs}}">{{message}}</p>
+            {% endfor %}
+            Alread have an account.?
+            <a href="{% url 'login' %}">Login</a>
+        </form>
+    </center>
 </div>
+{% endblock %}
+
+
+<!-- These block remain empty since this is login page does not these Informations -->
+{% block username %}{% endblock %}  
+{% block logout_link %}{% endblock %}       
+{% block page_status %}{% endblock %}
+{% block form %}
+{% endblock %}
+{% block views %}
 {% endblock %}

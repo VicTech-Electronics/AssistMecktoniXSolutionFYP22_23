@@ -1,0 +1,47 @@
+{% extends 'admin.html' %}
+{% load static %}
+{% block page_title %} 
+    <title>Home</title>
+{% endblock %}
+
+{% block links %}
+    <link rel="stylesheet" href="{% static 'css/admin_page.css' %}">
+    <link rel="stylesheet" href="{% static 'css/customer_page.css' %}">
+    <link rel="stylesheet" href="{% static 'css/tables.css' %}">
+    <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+{% endblock %}
+
+{% block username %} {{request.user}} {% endblock %} 
+{% block page_status %} Balance {% endblock %}
+
+<!-- Electronics money details  -->
+{% block details %}
+{% endblock %}
+
+<!-- Customer details views -->
+{% block views %}
+
+<!-- Customer transaction details -->
+<div class="trans_details">
+    <span id="table_title">BALANCE</span> 
+    <strong id="customer_amount">{{cobj.amount}} <small>TSh.</small></strong>
+
+    
+    <hr id="details_line">
+    <div class="payment_form">
+        <center>
+            <h1>Update balance</h1>
+            <form action="{% url 'update_balance_url' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="cid" value="{{cobj.id}}" required><br>
+                <input type="number" name="amount" value="{{cobj.amount}}" required><br>
+                <input id="form_btn" type="submit" value="submit"><br><br>
+    
+                {% for message in messages %}
+                    <p class="{{message.logs}}">{{message}}</p>
+                {% endfor %}
+            </form>
+        </center>
+    </div>
+</div>
+{% endblock %}

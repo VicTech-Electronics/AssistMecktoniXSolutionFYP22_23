@@ -1,39 +1,42 @@
-{% extends 'index.html' %}
+{% extends 'admin.html' %}
 {% load static %}
-{% block notification_menu %}
+{% block page_title %}
+    <title>Login</title>
 {% endblock %}
-{% block contents %}
-<div class="container-fluid">
-    <div class="row justify-content-center align-iterms-center" style="height: 100vh;">
-        <div class="col-md-6 card card-center">
-            {% block title %}
-                <div class="cards__heading">
-                    <h3>Login Page <span></span></h3>
-                    <small>For administration uses only</small>
-                </div>
-            {% endblock %}
-            <div class="card-body">
-                {% block form %}
-                    <form action="{% url 'login' %}" method="post">
-                        {% csrf_token %}
-                        <div class="form-group">
-                            <label for="exampleInputEmail1" class="input__label">Username</label>
-                            <input type="text" class="form-control input-style" name="username" placeholder="Enter username">
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputPassword1" class="input__label">Password</label>
-                            <input type="password" class="form-control input-style" name="password" placeholder="Enter password">
-                        </div>
-                        <p>Are you customer you want to make payment? click <a href="{% url 'payment' %}">Here</a></p>
-                        {% for message in messages %}
-                            <p class="{{message.tags}}">{{message}}</p>
-                        {% endfor %}
 
-                        <button type="submit" class="btn btn-primary btn-style mt-4">Login</button>
-                    </form>
-                {% endblock %}
-            </div>
-        </div>
-    </div>
+{% block links %}
+    <link rel="stylesheet" href="{% static 'css/admin_page.css' %}">
+    <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+{% endblock %}
+
+
+{% block details %}
+<div class="login_form">
+    <center>
+        <h2 id="form_title">Login Form</h2>
+        <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            <input type="text" name="username" placeholder="Username" required><br>
+            <input type="password" name="password" placeholder="Password" required><br>
+            <input id="form_btn" type="submit" value="Login"><br><br>
+
+            {% for message in messages %}
+                <p class="{{message.logs}}">{{message}}</p>
+            {% endfor %}
+
+            You don't have an account.? <br>
+            Request: <a href="{% url 'register' %}">Registration.</a>
+        </form>
+    </center>
 </div>
+{% endblock %}
+
+
+<!-- These block remain empty since this is login page does not these Informations -->
+{% block username %}{% endblock %}  
+{% block logout_link %}{% endblock %}       
+{% block page_status %}{% endblock %}
+{% block form %}
+{% endblock %}
+{% block views %}
 {% endblock %}
